@@ -19,10 +19,10 @@ RUN cd /etc/yum.repos.d/ \
     && yum update -y
 
 RUN yum install -y kernel-devel \
-    && kernel-headers \
-    && gcc \
-    && make \
-    && perl
+    kernel-headers \
+    gcc \
+    make \
+    perl
 
 RUN cd /etc/yum.repos.d/ \
     && curl -O https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
