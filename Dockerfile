@@ -28,6 +28,6 @@ RUN cd /etc/yum.repos.d/ \
     && curl -O https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
     && yum install -y VirtualBox-6.1
 
-RUN echo "PermitRootLogin without-password" >> /etc/ssh/sshd_config
+RUN echo "root:password" | chpasswd
 
 CMD ["/usr/sbin/init"]
