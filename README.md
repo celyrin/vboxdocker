@@ -5,6 +5,20 @@ This Docker container includes VirtualBox, allowing you to run VirtualBox inside
 
 Before running this container, ensure you have Docker installed on your system. You also need to ensure that VirtualBox is installed on the host system and the necessary kernel modules (`vboxdrv`) are loaded.
 
+## Building the Container
+
+To build this container, use the following Docker command:
+
+```bash
+docker build -t vboxdocker .
+```
+
+You can also get the pre-built image from Docker Hub:
+
+```bash
+docker pull celyrin/vboxdocker:latest
+```
+
 ## Running the Container
 
 To run this container, use the following Docker command:
