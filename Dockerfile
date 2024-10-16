@@ -12,7 +12,9 @@ RUN dnf install -y kernel-devel \
     kernel-headers \
     gcc \
     make \
-    perl
+    perl \
+    kmod \
+    procps-ng
 
 RUN cd /etc/yum.repos.d/ \
     && curl -O https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
