@@ -1,10 +1,10 @@
 FROM centos:6
 
 # Configure repositories and update system
-RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo \
-    && yum clean all \
-    && yum makecache \
-    && yum -y update
+# RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo \
+#     && yum clean all \
+#     && yum makecache \
+RUN yum -y update
 
 # Install necessary packages
 RUN yum install -y kernel-devel \
