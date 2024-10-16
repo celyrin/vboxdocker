@@ -2,7 +2,7 @@ FROM centos:6
 
 # Configure repositories and update system
 RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo \
-    && sed -i 's|^#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=http://vault.centos.org/6.2|g' /etc/yum.repos.d/CentOS-Base.repo \
+    && sed -i 's|^#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=http://vault.centos.org/6.10|g' /etc/yum.repos.d/CentOS-Base.repo \
     && yum clean all \
     && yum makecache \
     && yum -y update
