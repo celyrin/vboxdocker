@@ -1,4 +1,4 @@
-FROM centos:6.2
+FROM centos:6
 
 # Configure repositories and update system
 RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo \
