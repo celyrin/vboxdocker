@@ -29,5 +29,4 @@ jobs:
         file: ./Dockerfile
         push: true
         tags: |
-          celyrin/vboxdocker:latest
           celyrin/vboxdocker:${{ github.ref_name }}

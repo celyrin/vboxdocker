@@ -1,33 +1,24 @@
-FROM centos:7
+FROM centos:6.2
 
-ENV container docker
-
-RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
-rm -f /lib/systemd/system/multi-user.target.wants/*;\
-rm -f /etc/systemd/system/*.wants/*;\
-rm -f /lib/systemd/system/local-fs.target.wants/*; \
-rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
-rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
-rm -f /lib/systemd/system/basic.target.wants/*;\
-rm -f /lib/systemd/system/anaconda.target.wants/*;
-
-RUN cd /etc/yum.repos.d/ \
-    && curl -O http://mirrors.aliyun.com/repo/Centos-7.repo \
-    && mv Centos-7.repo CentOS-Base.repo \
+# Configure repositories and update system
+RUN curl -o /etc/yum.repos.d/CentOS-Base.repo http://mirrors.aliyun.com/repo/Centos-6.repo \
     && yum clean all \
     && yum makecache \
-    && yum update -y
+    && yum -y update
 
+# Install necessary packages
 RUN yum install -y kernel-devel \
     kernel-headers \
     gcc \
     make \
     perl
 
-RUN cd /etc/yum.repos.d/ \
-    && curl -O https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
+# Add VirtualBox repository and install VirtualBox
+RUN curl -o /etc/yum.repos.d/virtualbox.repo https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
     && yum install -y VirtualBox-6.1
 
+# Set root password (Optional: remove this line if no password is required)
 RUN echo "root:password" | chpasswd
 
-CMD ["/usr/sbin/init"]
+# Command to run on container start
+CMD ["/sbin/init"]
