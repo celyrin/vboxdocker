@@ -1,25 +1,32 @@
-FROM centos:6
+FROM rockylinux/rockylinux:9
 
-# Configure repositories and update system
-RUN sed -i 's|^mirrorlist=|#mirrorlist=|g' /etc/yum.repos.d/CentOS-Base.repo \
-    && sed -i 's|^#baseurl=http://mirror.centos.org/centos/$releasever|baseurl=http://vault.centos.org/6.10|g' /etc/yum.repos.d/CentOS-Base.repo \
-    && yum clean all \
-    && yum makecache \
-    && yum -y update
+ENV container docker
 
-# Install necessary packages
-RUN yum install -y kernel-devel \
+RUN (cd /lib/systemd/system/sysinit.target.wants/; for i in *; do [ $i == systemd-tmpfiles-setup.service ] || rm -f $i; done); \
+rm -f /lib/systemd/system/multi-user.target.wants/*;\
+rm -f /etc/systemd/system/*.wants/*;\
+rm -f /lib/systemd/system/local-fs.target.wants/*; \
+rm -f /lib/systemd/system/sockets.target.wants/*udev*; \
+rm -f /lib/systemd/system/sockets.target.wants/*initctl*; \
+rm -f /lib/systemd/system/basic.target.wants/*;\
+rm -f /lib/systemd/system/anaconda.target.wants/*;
+
+RUN dnf -y install dnf-plugins-core && \
+    dnf config-manager --set-enabled crb && \
+    dnf clean all && \
+    dnf makecache && \
+    dnf -y update
+
+RUN dnf install -y kernel-devel \
     kernel-headers \
     gcc \
     make \
     perl
 
-# Add VirtualBox repository and install VirtualBox
-RUN curl -o /etc/yum.repos.d/virtualbox.repo https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
-    && yum install -y VirtualBox-6.1
+RUN cd /etc/yum.repos.d/ \
+    && curl -O https://download.virtualbox.org/virtualbox/rpm/el/virtualbox.repo \
+    && dnf install -y VirtualBox-6.1
 
-# Set root password (Optional: remove this line if no password is required)
 RUN echo "root:password" | chpasswd
 
-# Command to run on container start
-CMD ["/sbin/init"]
+CMD ["/usr/sbin/init"]
